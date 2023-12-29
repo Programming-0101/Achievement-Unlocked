@@ -4,14 +4,14 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import javascriptLogo from './javascript.svg'
+import javascriptLogo from '/javascript.svg'
 import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import { setupCounter } from './src/counter.js'
 import { createBadge, createBadgeContainer } from '/src/badges.js'
 
 library.add(fas, far, fab);
 
-const bolt = icon({ prefix: 'fas', iconName: 'bolt' });
+// const bolt = icon({ prefix: 'fas', iconName: 'bolt' });
 
 document.querySelector('#app').innerHTML = `
   <div>
@@ -23,7 +23,7 @@ document.querySelector('#app').innerHTML = `
     </a>
     <h1>Hello Vite!</h1>
     <div id="badge-container">
-    ${createBadge({ color: 'yellow', faIcon: FA.faBolt, achievement: 'Initiator' })}
+    ${createBadge({ color: 'yellow', faIcon: '', achievement: 'Initiator' })}
     </div>
     <div class="card">
       <button id="counter" type="button"></button>
