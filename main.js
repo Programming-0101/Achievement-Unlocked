@@ -7,7 +7,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import javascriptLogo from '/javascript.svg'
 import viteLogo from '/vite.svg'
 import { setupCounter } from './src/counter.js'
-import { createBadge, createBadgeContainer } from '/src/badges.js'
+import { createBadge, createBadgeContainer, badgeColors } from '/src/badges.js'
 
 // import { IconName } from '@fortawesome/fontawesome-common-types';
 
@@ -17,16 +17,17 @@ import { createBadge, createBadgeContainer } from '/src/badges.js'
 library.add(fas, far, fab);
 console.log(library.definitions);
 const iconNames = Object.keys(library.definitions.fas).map(key => key.replace(/^fa-/, ''));
-console.log(iconNames);
+console.log(badgeColors);
 // const bolt = icon({ prefix: 'fas', iconName: 'bolt' });
 
 // Create an HTML form as a dialog (using the latest HTML5 dialog features with form validation) to gather the basic information for a badge: color, icon, and achievement text.
 const dialogForm = `
 <form id="badge-form" method="dialog">
   <label for="color">Color:</label>
-  <input type="color" id="color" name="color" value="#ff0000">
+  <input type="text" list="badge-colors" id="color" name="color">
+  <datalist id="badge-colors"></datalist>
   <label for="achievement">Achievement:</label>
-  <input type="text" id="achievement" name="achievement" value="Initiator">
+  <input type="text" id="achievement" name="achievement">
   <br />
   <label for="faIcon">Icon:</label>
   <input type="text" list="knownIconNames" id="faIcon" name="faIcon">
@@ -49,8 +50,8 @@ document.querySelector('#app').innerHTML = `
     <h1>Hello Vite!</h1>
     ${dialogForm}
     <div id="preview">
-      <div id="badge-container">
-      ${createBadge({ color: 'yellow', faIcon: '', achievement: 'Initiator' })}
+      <div id="badge-container" class="main-wrapper">
+      ${createBadge({ color: 'yellow', fa: 'fas', faIcon: 'bolt', achievement: 'Initiator' })}
       </div>
     </div>
     <div class="card">
@@ -72,6 +73,12 @@ iconNames.forEach(iconName => {
   datalist.appendChild(option);
 });
 
+const colorDatalist = document.getElementById('badge-colors');
+badgeColors.forEach(color => {
+  const option = document.createElement('option');
+  option.value = color;
+  colorDatalist.appendChild(option);
+});
 
 document.getElementById('icon-picker').addEventListener('click', () => {
   console.log('icon picker clicked');
@@ -87,4 +94,28 @@ document.getElementById('icon-picker').addEventListener('click', () => {
   } else {
     iconPreview.innerHTML = `<i class="fa fa-question"></i>`;
   }
-})
+});
+
+document.getElementById('badge-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const badgeData = Object.fromEntries(formData.entries());
+  const selected = badgeData.faIcon;
+  badgeData.fa = 'fas';
+  badgeData.faIcon = 'fa-' + badgeData.faIcon;
+  console.log(badgeData);
+
+  const badgeContainer = document.getElementById('badge-container');
+  badgeContainer.innerHTML = createBadge(badgeData);
+  /*
+    <div class="badge yellow">
+    <div class="circle"> <i class="fa fa-bolt"></i></div>
+    <div class="ribbon">Initiator</div>
+  </div>
+    */
+  const circle = badgeContainer.querySelector('.circle');
+  circle.innerHTML = '';
+  const searchResults = findIconDefinition({ prefix: 'fas', iconName: selected });
+  const i = icon(searchResults);
+  Array.from(i.node).map(n => circle.appendChild(n))
+});

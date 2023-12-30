@@ -55,7 +55,7 @@
     bottom: 0;
     margin: auto;
   }
-  .badge .circle i.fa {
+  .badge .circle i.fa, .badge .circle svg {
     font-size: 2em;
     margin-top: 8px;
   }

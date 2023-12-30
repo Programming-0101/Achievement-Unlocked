@@ -1,7 +1,22 @@
 import '/styles/badges.css'
+
+export const badgeColors = [
+    'yellow',
+    'orange',
+    'pink',
+    'red',
+    'purple',
+    'teal',
+    'blue',
+    'blue-dark',
+    'green',
+    'green-dark',
+    'silver',
+    'gold'
+];
 /**
  * createBadge generates an HTML string of a badge
- * @param {color, faIcon, achievement} badge Details of the badge to be created
+ * @param {color, fa, faIcon, achievement} badge Details of the badge to be created
  * @returns An HTML string of the badge
  */
 export const createBadge = (badge) => {
@@ -12,7 +27,7 @@ export const createBadge = (badge) => {
   </div>
     */
     const badgeHtml = `<div class="badge ${badge.color}">
-   <div class="circle"> <i class="fa ${badge.faIcon}"></i></div>
+   <div class="circle"> <i class="${badge.fa} fa-${badge.faIcon}"></i></div>
    <div class="ribbon">${badge.achievement}</div>
  </div>`
     return badgeHtml;
